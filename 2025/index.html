@@ -1,0 +1,123 @@
+<html>
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115864866-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-115864866-1');
+    </script>
+
+
+    <title>Adam Lowther Energy Graphs</title>
+    <meta property="og:title" content="Lowther Duke Graph" />
+    <meta property="og:image" content="https://victorious-stone-089b1c90f.2.azurestaticapps.net/grid_solar.png" />
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawDukeSheet);
+      google.charts.setOnLoadCallback(drawSolarCitySheet);
+
+    function drawDukeSheet() {
+      var queryString = encodeURIComponent('SELECT A,D,F,G ');
+
+      var query = new google.visualization.Query(
+          'https://docs.google.com/spreadsheets/d/19nVbfrK5xyCofvXSArDnea2Ms_uZ6b0k6_vJohgly_o/gviz/tq?sheet=Duke-2025&headers=1&tq=' + queryString);
+      query.send(handleDukeDataQueryResponse);
+    }
+
+    function handleDukeDataQueryResponse(response) {
+      if (response.isError()) {
+        alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+        return;
+      }
+
+      var data = response.getDataTable();
+      var chart = new google.visualization.LineChart(document.getElementById('duke_chart'));
+
+
+        var linearOptions = {
+        title: 'Duke Bill',
+        height: 500,
+        hAxis: {
+          title: 'Billing Month',
+          gridlines: {count: 12}
+        },
+        vAxis: {
+          title: 'Energy (kWh)',
+          gridlines: {count: 10}
+        }
+      };
+
+      chart.draw(data, linearOptions);
+    }
+
+     function drawSolarCitySheet() {
+      var queryString = encodeURIComponent('SELECT A,B');
+
+      var query = new google.visualization.Query(
+          'https://docs.google.com/spreadsheets/d/19nVbfrK5xyCofvXSArDnea2Ms_uZ6b0k6_vJohgly_o/gviz/tq?sheet=SolarCity-2025&headers=1&tq=' + queryString);
+      query.send(handleSolarCityDataQueryResponse);
+    }
+
+    function handleSolarCityDataQueryResponse(response) {
+      if (response.isError()) {
+        alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+        return;
+      }
+
+      var data = response.getDataTable();
+      var chart = new google.visualization.LineChart(document.getElementById('solarcity_chart'));
+
+
+    var linearOptions = {
+        title: 'SolarCity',
+        height: 500,
+        hAxis: {
+          title: 'Calendar Month',
+          gridlines: {count: 12}
+        },
+        vAxis: {
+          title: 'Energy (kWh)',
+          gridlines: {count: 10}
+        }
+      };
+
+      chart.draw(data, linearOptions);
+    }
+
+    </script>
+  </head>
+  <body>
+<div id="header"></div>
+    <h1><center> Energy Consumption Comparisons</center></h1>
+    <p></p>
+    <h2><center>Recap</center></h2>
+    <!--#include virtual="/adam/dukeusage/page-description.html" -->
+    <br><br>
+    For the graphs and info about my 2017 year, see <a href="https://victorious-stone-089b1c90f.2.azurestaticapps.net/2017">here</a><br>
+    For the graphs and info about my 2018 year, see <a href="https://victorious-stone-089b1c90f.2.azurestaticapps.net/2018">here</a><br>
+    For the graphs and info about my 2019 year, see <a href="https://victorious-stone-089b1c90f.2.azurestaticapps.net/2019">here</a><br>
+    For the graphs and info about my 2020 year, see <a href="https://victorious-stone-089b1c90f.2.azurestaticapps.net/2020">here</a><br>
+    For the graphs and info about my 2021 year, see <a href="https://victorious-stone-089b1c90f.2.azurestaticapps.net/2021">here</a><br>
+    For the graphs and info about my 2022 year, see <a href="https://victorious-stone-089b1c90f.2.azurestaticapps.net/2022">here</a><br>
+    For the graphs and info about my 2023 year, see <a href="https://victorious-stone-089b1c90f.2.azurestaticapps.net/2023">here</a><br>
+    For the graphs and info about my 2024 year, see <a href="https://victorious-stone-089b1c90f.2.azurestaticapps.net/2024">here</a><br>
+
+    <h2><center>2025</center></h2>
+
+    <p><p>
+    Since turning on my solar energy system, my Duke bill has been the cost of the <a href="https://www.duke-energy.com/home/billing/rates">"residential service customer charge"</a>.  This fee has gone up many times since my system was installed.  There have been few a exceptions, the most I have paid Duke for a month's usage is $60 (October 2021, random spike that has been accounted for).  Duke has implemented a minimum bill, which means my monthly expense is now $30.
+    <!--#include virtual="/adam/dukeusage/duke-graph-explanation.html" -->
+    <div id="duke_chart" style="width: 900px; height: 500px"></div>
+    <p>
+    <h3>The second graph, depicts the values from my <a href="https://ts.la/adam3782">SolarCity</a> inverters.</h3>
+    <br> This shows what my SolarCity inverters are reporting at the end of each calendar month
+    <div id="solarcity_chart" style="width: 900px; height: 500px"></div>
+    <footer>
+      <!--#include virtual="/adam/dukeusage/footer.html" -->
+    </footer>
+  </body>
+</html>
